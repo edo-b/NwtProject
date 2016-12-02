@@ -250,3 +250,16 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+#Angular 2 ignores
+system-config.js*
+bin/*.js
+bin/**/*.js
+bin/**/*.map
+bin/*.map
+node_modules
+jspm_packages
+bower_components
+aot/*
+dist/*
+yarn.lock

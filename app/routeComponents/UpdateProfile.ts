@@ -1,39 +1,10 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta charset="utf-8">
-        <link rel="stylesheet" href="Bootstrap/bootstrap.min.css">
-        <link rel="stylesheet" href="styles/style.css">
-        <script src="jQuery/jquery-3.1.1.min.js"></script>
-        <script src="Bootstrap/bootstrap.min.js"></script>
-    </head>
-    <body>
-        <!--header-->
-        <nav class="navbar navbar-dark bg-inverse navbar-static-top">
-            <a class="navbar-brand" href="index.html">Navbar</a>
-            <ul class="nav navbar-nav">
-                <li class="nav-item">
-                <a class="nav-link" href="index.html">Home</a>
-                </li>
-                <li class="nav-item active">
-                <a class="nav-link">Profile</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="find.html">Find people</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="sample_profile.html">Sample profile</a>
-                </li>
-            </ul>
-            <form class="form-inline float-xs-right">
-                <a href="login.html"><button type="button" class="btn btn-outline-info">Logout</button></a>
-            </form>
-        </nav>
-        <!--header end-->
+import { Component, Input } from '@angular/core';
 
-        <div class="container">
-            <h1>Update profile</h1>
+@Component({
+    selector: "update-profile",
+    template: `
+    <div class="container">
+        <h1>Update profile</h1>
             <hr>
             <br>
             <div class="row">
@@ -64,12 +35,13 @@
                             <label>Something</label>
                             <input type="text" class="form-control" placeholder="Enter email">
                         </div>
-                        <input type="submit" class="btn btn-primary" value="Update profile" /> 
-                        <a href="index.html" class="btn btn-danger">Cancel</a>
+                        <button class="btn btn-primary">Update profile</button>
+                        <a class="btn btn-danger" routerLink="/home">Cancel</a>
                     </form>
                 </div>
             </div>
         </div>
-
-    </body>
-</html>
+    `
+})
+export default class ProfileComponent {
+}
