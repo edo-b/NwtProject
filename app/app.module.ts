@@ -12,6 +12,7 @@ import FindUsers from './routeComponents/FindUsers';
 import PageNotFound from './routeComponents/PageNotFound';
 import Login from './routeComponents/Login';
 import Register from './routeComponents/Register';
+import MyPins from './routeComponents/MyPins';
 
 import Pin from './components/Pin';
 
@@ -24,13 +25,14 @@ import Pin from './components/Pin';
       { path: 'home', component: Home },
       { path: 'update-profile', component: UpdateProfile },
       { path: 'profile', component: Profile },
+      { path: 'pins', component: MyPins },
       { path: 'find', component: FindUsers },
       { path: 'login', component: Login },
       { path: 'register', component: Register },
       { path: '**', component: PageNotFound }
     ])
   ],
-  declarations: [ AppComponent, Home, PageNotFound, Profile, UpdateProfile, FindUsers, Login, Register, Pin],
+  declarations: [ AppComponent, Home, PageNotFound, Profile, UpdateProfile, FindUsers, Login, Register, MyPins, Pin],
   providers: [],
   bootstrap:    [ AppComponent ]
 })

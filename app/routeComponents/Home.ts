@@ -1,5 +1,8 @@
 import { Component, Input } from '@angular/core';
 
+import Pin from './../models/Pin';
+import PinService from './../services/PinService';
+
 @Component({
     selector: "home", 
     template: `
@@ -12,7 +15,7 @@ import { Component, Input } from '@angular/core';
                 </button>
             <div>
 
-            <pin *ngFor="let pin of _dummyPins"></pin>
+            <pin *ngFor="let pin of dummyPins" [pin]=pin [isEditMode]=false [usernameOfCreator]=""></pin>
 
         <!--Add new pin modal-->
         <div class="modal fade" id="newPinModal">
@@ -60,5 +63,9 @@ import { Component, Input } from '@angular/core';
         </div><!-- /.modal -->`
 })
 export default class HomeRouteComponent {
-    private _dummyPins = ["Dummy", "Dummy", "Dummy", "Dummy", "Dummy", "Dummy"];
+    private dummyPins: Pin[];
+
+    constructor(pinservice: PinService) {
+        this.dummyPins = pinservice.getTestPins();
+    }
 }

@@ -1,5 +1,6 @@
 .navbar{
     border-radius: 0;
+    height: 3.5em;
 }
 
 .login-container{
@@ -18,4 +19,14 @@
 .control-label
 {
     padding-top: 7px;
+}
+
+.navbar>.form-inline{
+    float:right;
+}
+
+#delete-card-button{
+    float: right;
+    position: relative;
+    font-size: 15px;
 }
