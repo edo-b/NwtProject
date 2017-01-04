@@ -64,8 +64,10 @@ import PinService from './../services/PinService';
 })
 export default class HomeRouteComponent {
     private dummyPins: Pin[];
+    private pinService: PinService;
 
     constructor(pinservice: PinService) {
         this.dummyPins = pinservice.getTestPins();
+        this.pinService = pinservice;
     }
 }

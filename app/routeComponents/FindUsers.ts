@@ -1,5 +1,8 @@
 import { Component, Input } from '@angular/core';
 
+import User from './../models/User';
+import UserService from './../services/UserService';
+
 @Component({
     selector: "find", 
     template: `
@@ -39,4 +42,10 @@ import { Component, Input } from '@angular/core';
     `
 })
 export default class FindUsersComponent {
+    private users: User[];
+    private userService: UserService;
+
+    constructor(userService: UserService){
+        this.userService = userService;
+    }
 }

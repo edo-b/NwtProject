@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import PinService from './services/PinService';
+import UserService from './services/UserService';
 
 @Component({
   selector: 'my-app',
@@ -32,7 +33,7 @@ import PinService from './services/PinService';
 
         <router-outlet></router-outlet>
       `,
-      providers: [PinService]
+      providers: [PinService, UserService]
 })
 export class AppComponent { 
   
