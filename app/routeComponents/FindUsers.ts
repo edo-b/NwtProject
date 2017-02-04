@@ -18,27 +18,13 @@ import UserService from './../services/UserService';
             <br>
             <h2>People you follow</h2>
             <br>
-            <div class="row">
-                <img class="img-thumbnail col-md-4" src="https://app.nimia.com/static/img/default_profile.png" style="width:100px;"/>
-                <a class="col-md-8" href="sample_profile.html" style="color:black; font-size:20px; text-decoration:none;">John Doe</a>
+            <div *ngFor="let user of users">
+                <div class="row">
+                    <img class="img-thumbnail col-md-4" [src]="user.profileImageUrl" style="width:100px;"/>
+                    <a class="col-md-8" [routerLink]="'/profile/' + user.id" style="color:black; font-size:20px; text-decoration:none;">{{user.firstName}} {{user.lastName}}</a>
+                </div>
+                <hr>
             </div>
-            <hr>
-            <div class="row">
-                <img class="img-thumbnail col-md-4" src="https://app.nimia.com/static/img/default_profile.png" style="width:100px;"/>
-                <a class="col-md-8" href="sample_profile.html" style="color:black; font-size:20px; text-decoration:none;">John Doe</a>
-            </div>
-            <hr>
-            <div class="row">
-                <img class="img-thumbnail col-md-4" src="https://app.nimia.com/static/img/default_profile.png" style="width:100px;"/>
-                <a class="col-md-8" href="sample_profile.html" style="color:black; font-size:20px; text-decoration:none;">John Doe</a>
-            </div>
-            <hr>
-            <div class="row">
-                <img class="img-thumbnail col-md-4" src="https://app.nimia.com/static/img/default_profile.png" style="width:100px;"/>
-                <a class="col-md-8" href="sample_profile.html" style="color:black; font-size:20px; text-decoration:none;">John Doe</a>
-            </div>
-            <hr>
-        </div>
     `
 })
 export default class FindUsersComponent {
@@ -47,5 +33,6 @@ export default class FindUsersComponent {
 
     constructor(userService: UserService){
         this.userService = userService;
+        this.users = this.userService.getFolowedUsers(new User(11, "", "#", ""));
     }
 }

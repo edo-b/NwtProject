@@ -8,12 +8,18 @@ import PinService from './../services/PinService';
     template: `
         <div class="container">
             
+            
             <div class="row">
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#newPinModal">
-                Add new pin
-                </button>
-            <div>
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#newPinModal">
+                        Add new pin
+                    </button>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+
+            <br>
 
             <pin *ngFor="let pin of dummyPins" [pin]=pin [isEditMode]=false [usernameOfCreator]=""></pin>
 

@@ -24,7 +24,7 @@ import Pin from './components/Pin';
       { path: '', component: Home },
       { path: 'home', component: Home },
       { path: 'update-profile', component: UpdateProfile },
-      { path: 'profile', component: Profile },
+      { path: 'profile/:id', component: Profile },
       { path: 'pins', component: MyPins },
       { path: 'find', component: FindUsers },
       { path: 'login', component: Login },

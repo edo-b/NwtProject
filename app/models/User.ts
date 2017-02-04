@@ -1,10 +1,12 @@
-export default class Pin{
-    public Id: number;
-    public fullName: string;
+export default class User{
+    public id: number;
+    public firstName: string;
+    public lastName: string;
     public profileImageUrl: string;
-    constructor(id: number, fullName: string, profileImageUrl: string) {
-        this.Id = id;
-        this.fullName = fullName;
+    constructor(id: number, firstName: string, lastName: string, profileImageUrl: string) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.profileImageUrl = profileImageUrl;
     }
 }

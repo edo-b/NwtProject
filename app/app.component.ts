@@ -19,9 +19,6 @@ import UserService from './services/UserService';
                   <a class="nav-link" routerLink="/find" routerLinkActive="active">Find people</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" routerLink="/profile" routerLinkActive="active">Sample profile</a>
-                </li>
-                <li class="nav-item">
                   <a class="nav-link" routerLink="/update-profile" routerLinkActive="active">Update profile</a>
                 </li>
             </ul>
