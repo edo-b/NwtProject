@@ -2,7 +2,7 @@ import User from './User';
 import Comment from './Comment';
 
 export default class Pin{
-    public Id: number;
+    public id: number;
     public createdBy: User;
     public imageUrl: string;
     public text: string;

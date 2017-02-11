@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
+
 import Pin from './../models/Pin';
+import PinService from './../services/PinService';
 
 @Component({
     selector: "pin", 
@@ -8,8 +10,8 @@ import Pin from './../models/Pin';
                 <div class="col-md-2"></div>
                 <div class="card col-md-8">
                     <div class="card-block">
-                        <button id="delete-card-button" class="btn btn-sm btn-danger" *ngIf="isEditMode">X</button>
-                        <h4 class="card-title"><a href="sample_profile.html" style="color:#686868;">Hardcoded username{{usernameOfCreator}}</a></h4>
+                        <button id="delete-card-button" class="btn btn-sm btn-danger" *ngIf="isEditMode" (click)="deletePin()">X</button>
+                        <h4 class="card-title"><a [routerLink]="'/profile/' + pin.createdBy.id" style="color:#686868;">{{pin.createdBy.firstName}} {{pin.createdBy.lastName}}</a></h4>
                     </div>
                     <img class="card-img-top" [src]="pin.imageUrl" style="width:100%; margin-top:10px;" alt="Card image cap">
                     <div class="card-block">
@@ -53,4 +55,14 @@ export default class PinComponent{
     public usernameOfCreator: string;
     @Input()
     public isEditMode: boolean;
+
+    private pinService: PinService;
+
+    constructor(pinService: PinService){
+        this.pinService = pinService;
+    }
+
+    public deletePin(){
+        this.pinService.deletePin(this.pin.id);
+    }
 }

@@ -35,14 +35,28 @@ import PinService from './../services/PinService';
 })
 export default class ProfileComponent {
     private userService: UserService;
-    private PinService: PinService;
+    private pinService: PinService;
+    private route: ActivatedRoute;
 
     private id: number;
     private user: User;
     private userPins: Pin[];
-    constructor(router: ActivatedRoute, userService: UserService, pinService: PinService){
-        this.id = router.snapshot.params["id"];
+    constructor(route: ActivatedRoute, userService: UserService, pinService: PinService){
+        this.route = route;
+        this.userService = userService;
+        this.pinService = pinService;
+
+        this.id = route.snapshot.params["id"];
         this.user = userService.getUserById(this.id);
         this.userPins = pinService.getPinsOfUser(this.id);
     }
+
+    //Subscribe to id change and refresh data (same route revisited doesnt refresh data)
+    ngOnInit() {
+        this.route.params.subscribe(params => {
+            this.id = params['id'];
+            this.user = this.userService.getUserById(this.id);
+            this.userPins = this.pinService.getPinsOfUser(this.id);
+         });
+        }
 }

@@ -86,4 +86,8 @@ export default class PinService {
     public getPinsOfUser(id: number){
         return this.testPins;
     }
+    public deletePin(id: number){
+        //delete pin on server
+        this.testPins.splice(this.testPins.indexOf(this.testPins.find(x=>x.createdBy.id == 1)), 1);
+    }
 }
