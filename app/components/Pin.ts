@@ -31,7 +31,7 @@ import PinService from './../services/PinService';
                                 <hr>
                                 <b><a [routerLink]="'/profile/' + comment.creator.id" style="color:#686868;">{{comment.creator.firstName}} {{comment.creator.lastName}}</a></b>: 
                                 <span>{{comment.text}}</span>
-                                <span style="cursor:pointer;" *ngIf="isEditMode">&times;</span>
+                                <span style="cursor:pointer;" (click)="deleteComment(comment.id)" *ngIf="isEditMode">&times;</span>
                             </div>
                             <br>
                         </div>
@@ -64,5 +64,8 @@ export default class PinComponent{
 
     public deletePin(){
         this.pinService.deletePin(this.pin.id);
+    }
+    deleteComment(id: number){
+        this.pinService.deleteComment(id);
     }
 }

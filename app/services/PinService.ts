@@ -17,17 +17,17 @@ export default class PinService {
                 ),
             new Comment(
                 1,
-                new User(1, "Marko", "Matić", "https://image.freepik.com/free-icon/user-male-shape-in-a-circle-ios-7-interface-symbol_318-35357.jpg"),
+                new User(2, "Ante", "Antić", "https://upload.wikimedia.org/wikipedia/commons/d/d3/User_Circle.png"),
                 "This is a test comment"
                 ),
             new Comment(
                 1,
-                new User(1, "Marko", "Matić", "https://image.freepik.com/free-icon/user-male-shape-in-a-circle-ios-7-interface-symbol_318-35357.jpg"),
+                new User(9, "Martina", "Martinić", "http://colorvisiontesting.com/images/plate%20with%205.jpg"),
                 "This is a test comment"
                 ),
             new Comment(
                 1,
-                new User(1, "Marko", "Matić", "https://image.freepik.com/free-icon/user-male-shape-in-a-circle-ios-7-interface-symbol_318-35357.jpg"),
+                new User(10, "Anamarija", "Abeceić", "https://www.sencha.com/wp-content/uploads/2016/02/icon-sencha-test-studio.png"),
                 "This is a test comment"
                 ),
             new Comment(
@@ -89,5 +89,9 @@ export default class PinService {
     public deletePin(id: number){
         //delete pin on server
         this.testPins.splice(this.testPins.indexOf(this.testPins.find(x=>x.createdBy.id == 1)), 1);
+    }
+    public deleteComment(id: number){
+        //delete comment on server
+        this.testPins[0].comments.splice(this.testPins[0].comments.indexOf(this.testPins[0].comments.find(x=>x.id == id)), 1);
     }
 }
