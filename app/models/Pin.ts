@@ -1,4 +1,5 @@
 import User from './User';
+import Comment from './Comment';
 
 export default class Pin{
     public Id: number;
@@ -9,8 +10,8 @@ export default class Pin{
     public postedOn: Date;
     public didCurrentUserLikePin: boolean;
     public numberOfLikes: number;
-    public comments: any[]
-    constructor(imageUrl: string, text: string, title: string, postedOn:Date, didCurrentUserLikePin: boolean, numberOfLikes: number, userThatCreatedPin: User) {
+    public comments: Comment[];
+    constructor(imageUrl: string, text: string, title: string, postedOn:Date, didCurrentUserLikePin: boolean, numberOfLikes: number, userThatCreatedPin: User, comments: Comment[]) {
         this.imageUrl = imageUrl;
         this.text = text;
         this.title = title;
@@ -18,6 +19,6 @@ export default class Pin{
         this.didCurrentUserLikePin = didCurrentUserLikePin;
         this.numberOfLikes = numberOfLikes;
         this.createdBy = userThatCreatedPin;
-        this.comments = [{},{},{},{}]; //HARDKODIRANOOOOOOOO i u templateu
+        this.comments = comments; //HARDKODIRANOOOOOOOO i u templateu
     }
 }

@@ -23,14 +23,16 @@ import Pin from './../models/Pin';
                         </p>
                     </div>
                     <div class="card-block">
-                        <h5>Comments:</h5>
-                        <div *ngFor="let comment of pin.comments">
-                            <hr>
-                            <b><a href="sample_profile.html" style="color:#686868;">John Doe</a></b>: 
-                            <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit </span>
-                            <span style="cursor:pointer;" *ngIf="isEditMode">&times;</span>
+                        <div *ngIf="pin.comments">
+                            <h5>Comments:</h5>
+                            <div *ngFor="let comment of pin.comments">
+                                <hr>
+                                <b><a [routerLink]="'/profile/' + comment.creator.id" style="color:#686868;">{{comment.creator.firstName}} {{comment.creator.lastName}}</a></b>: 
+                                <span>{{comment.text}}</span>
+                                <span style="cursor:pointer;" *ngIf="isEditMode">&times;</span>
+                            </div>
+                            <br>
                         </div>
-                        <br>
                         <form class="form-inline">
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="Your comment">

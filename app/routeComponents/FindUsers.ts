@@ -15,24 +15,42 @@ import UserService from './../services/UserService';
                 <button type="submit" class="btn btn-primary">Find profile</button>
             </form>
             <br>
-            <br>
-            <h2>People you follow</h2>
-            <br>
-            <div *ngFor="let user of users">
-                <div class="row">
-                    <img class="img-thumbnail col-md-4" [src]="user.profileImageUrl" style="width:100px;"/>
-                    <a class="col-md-8" [routerLink]="'/profile/' + user.id" style="color:black; font-size:20px; text-decoration:none;">{{user.firstName}} {{user.lastName}}</a>
+            <div class="col-md-7">
+                <h4>Search results</h4>
+                <br>
+                <div *ngFor="let user of searchResultUsers">
+                    <div class="row">
+                        <img class="img-thumbnail col-md-4" [src]="user.profileImageUrl" style="width:100px;"/>
+                        <a class="col-md-8" [routerLink]="'/profile/' + user.id" style="color:black; font-size:20px; text-decoration:none;">{{user.firstName}} {{user.lastName}}</a>
+                        <button class="btn btn-success">Follow</button>
+                    </div>
+                    <hr>
                 </div>
-                <hr>
+            </div>
+
+            <div class="col-md-5">
+                <h4>People you follow</h4>
+                <br>
+                <div class="pre-scrollable">
+                    <div *ngFor="let user of followedUsers">
+                        <div class="row">
+                            <img class="img-thumbnail col-md-4" [src]="user.profileImageUrl" style="width:100px;"/>
+                            <a class="col-md-8" [routerLink]="'/profile/' + user.id" style="color:black; font-size:20px; text-decoration:none;">{{user.firstName}} {{user.lastName}}</a>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
             </div>
     `
 })
 export default class FindUsersComponent {
-    private users: User[];
+    private followedUsers: User[];
+    private searchResultUsers: User[];
     private userService: UserService;
 
     constructor(userService: UserService){
         this.userService = userService;
-        this.users = this.userService.getFolowedUsers(new User(11, "", "#", ""));
+        this.followedUsers = this.userService.getFolowedUsers();
+        this.searchResultUsers = this.userService.getUsersBySearchString("Test");//Hardkoooooood
     }
 }

@@ -20,7 +20,7 @@ export default class UserService {
             new User(10, "Anamaria", "Abeceić", "https://www.sencha.com/wp-content/uploads/2016/02/icon-sencha-test-studio.png")
         ];
     }
-    public getFolowedUsers(currentUser: User){
+    public getFolowedUsers(){
         //retrieve users from server that current user follows
         return this.dummyData;
     } 
@@ -31,5 +31,12 @@ export default class UserService {
     public getUserById(id: number){
         //get user from server
         return this.dummyData.find(x => x.id == id);
+    }
+    public getCurrentUser(){
+        //get user of this session from server
+        return new User(1, "Test", "User", "http://www.wikiality.com/file/2016/11/bears1.jpg");
+    }
+    public getCurrentUserEMail(){
+        return "test@example.com";
     }
 }
