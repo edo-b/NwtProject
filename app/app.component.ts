@@ -7,7 +7,7 @@ import UserService from './services/UserService';
 @Component({
   selector: 'my-app',
   template: `
-        <nav class="navbar navbar-dark bg-inverse navbar-static-top">
+        <nav class="navbar navbar-dark bg-inverse navbar-fixed-top">
             <a class="navbar-brand" routerLink="/home">NwtApp</a>
             <ul class="nav navbar-nav">
                 <li class="nav-item">
@@ -28,7 +28,8 @@ import UserService from './services/UserService';
                 <a routerLink="/login"><button type="button" class="btn btn-outline-info">Login</button></a>
             </form>
         </nav>
-
+        <br>
+        <br>
         <router-outlet></router-outlet>
       `,
       providers: [PinService, UserService]

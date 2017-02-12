@@ -17,8 +17,8 @@ import PinService from './../services/PinService';
                     <div class="card-block">
                         <h4 class="card-title">{{pin.title}}</h4>
                         <p class="card-text">{{pin.text}}</p>
-                        <button class="btn btn-sm btn-primary" *ngIf="!pin.didCurrentUserLikePin">Like</button>
-                        <button class="btn btn-sm btn-outline-primary" *ngIf="pin.didCurrentUserLikePin">Unlike</button>
+                        <button class="btn btn-sm btn-primary" *ngIf="!pin.didCurrentUserLikePin" (click)="likePin()">Like</button>
+                        <button class="btn btn-sm btn-outline-primary" *ngIf="pin.didCurrentUserLikePin" (click)="unlikePin()">Unlike</button>
                         <b>{{pin.numberOfLikes}}</b> Likes
                         <p class="card-text">
                             <small class="text-muted">Posted: {{pin.date}}</small>
@@ -35,12 +35,12 @@ import PinService from './../services/PinService';
                             </div>
                             <br>
                         </div>
-                        <form class="form-inline">
+                        <div class="form-inline">
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Your comment">
+                                <input type="text" class="form-control" placeholder="Your comment" #commentInput>
                             </div>
-                            <button type="submit" class="btn btn-outline-primary">Post comment</button>
-                        </form>
+                            <button class="btn btn-outline-primary" (click)="postComment(commentInput)">Post comment</button>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-2"></div>
@@ -52,8 +52,6 @@ export default class PinComponent{
     @Input() 
     public pin: Pin;
     @Input()
-    public usernameOfCreator: string;
-    @Input()
     public isEditMode: boolean;
 
     private pinService: PinService;
@@ -63,9 +61,22 @@ export default class PinComponent{
     }
 
     public deletePin(){
-        this.pinService.deletePin(this.pin.id);
+        this.pinService.deletePin(this.pin);
     }
-    deleteComment(id: number){
+    public deleteComment(id: number){
         this.pinService.deleteComment(id);
+    }
+    public postComment(commentInput: HTMLInputElement){
+        if(commentInput.value != "")
+        {
+            this.pinService.postComment(this.pin, commentInput.value);
+            commentInput.value = "";
+        }
+    }
+    public likePin(){
+        this.pinService.likePin(this.pin);
+    }
+    public unlikePin(){
+        this.pinService.unlikePin(this.pin);
     }
 }

@@ -22,7 +22,7 @@ import UserService from './../services/UserService';
                     <div class="row">
                         <img class="img-thumbnail col-md-4" [src]="user.profileImageUrl" style="width:100px;"/>
                         <a class="col-md-8" [routerLink]="'/profile/' + user.id" style="color:black; font-size:20px; text-decoration:none;">{{user.firstName}} {{user.lastName}}</a>
-                        <button class="btn btn-success">Follow</button>
+                        <button class="btn btn-success" *ngIf="user.doesCurrentUserFollowThisUser" (click)="followUser(user)">Follow</button>
                     </div>
                     <hr>
                 </div>
@@ -52,5 +52,12 @@ export default class FindUsersComponent {
         this.userService = userService;
         this.followedUsers = this.userService.getFolowedUsers();
         this.searchResultUsers = this.userService.getUsersBySearchString("Test");//Hardkoooooood
+    }
+
+    public followUser(user: User){
+        this.userService.followUser(user);
+    }
+    public unfollowUser(user: User){
+        this.userService.unfollowUser(user);
     }
 }

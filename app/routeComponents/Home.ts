@@ -21,7 +21,7 @@ import PinService from './../services/PinService';
 
             <br>
 
-            <pin *ngFor="let pin of dummyPins" [pin]=pin [isEditMode]=false [usernameOfCreator]=""></pin>
+            <pin *ngFor="let pin of dummyPins" [pin]=pin [isEditMode]=false></pin>
 
         <!--Add new pin modal-->
         <div class="modal fade" id="newPinModal">
@@ -73,7 +73,7 @@ export default class HomeRouteComponent {
     private pinService: PinService;
 
     constructor(pinservice: PinService) {
-        this.dummyPins = pinservice.getTestPins();
+        this.dummyPins = pinservice.getNewsFeedPins();
         this.pinService = pinservice;
     }
 }

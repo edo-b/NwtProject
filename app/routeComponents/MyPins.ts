@@ -11,7 +11,7 @@ import PinService from './../services/PinService';
                 <hr>
                 <br>
                 <br>
-                <pin *ngFor="let pin of dummyPins" [pin]=pin [isEditMode]=true [usernameOfCreator]=""></pin>
+                <pin *ngFor="let pin of dummyPins" [pin]=pin [isEditMode]=true></pin>
             </div>
         `
 })
@@ -19,6 +19,6 @@ export default class MyPinsComponent {
     private dummyPins: Pin[];
 
     constructor(pinservice: PinService) {
-        this.dummyPins = pinservice.getTestPins();
+        this.dummyPins = pinservice.getMyPins();
     }
 }
