@@ -36,32 +36,24 @@ import PinService from './../services/PinService';
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <label>Pin text</label>
-                            <input type="text" class="form-control" placeholder="Enter text">
+                            <label>Pin title</label>
+                            <input type="text" class="form-control" placeholder="Enter title" #titleInput>
+                        </div>
+                        <div class="form-group">
+                            <label>Pin description</label>
+                            <input type="text" class="form-control" placeholder="Enter description" #textInput>
                         </div>
                         <div class="form-group">
                             <label>Add image</label>
-                            <input type="file" value="Choose image" class="form-control" placeholder="Chose file">
+                            <input type="file" class="form-control" placeholder="Choose file" (change)="fileChangeEvent($event)" accept="image/*">
                         </div>
-                        <label>Choose tag</label>
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="">
-                                Food
-                            </label>
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="">
-                                Fitness
-                            </label>
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="">
-                                Book
-                            </label>
+                        <div id="image-preview-div" *ngIf="previewSrc">
+                            <img id="preview-image" [src]="previewSrc">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <input type="submit" class="btn btn-primary" value="Add pin" /> 
+                    <button class="btn btn-primary" (click)="addNewPin(titleInput, textInput)">Add new pin</button> 
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
                 </div><!-- /.modal-content -->
@@ -71,9 +63,33 @@ import PinService from './../services/PinService';
 export default class HomeRouteComponent {
     private dummyPins: Pin[];
     private pinService: PinService;
+    private file: File;
+    public previewSrc: string;
 
     constructor(pinservice: PinService) {
         this.dummyPins = pinservice.getNewsFeedPins();
         this.pinService = pinservice;
+    }
+    fileChangeEvent(fileInput: any){
+        if(fileInput.target.files && fileInput.target.files[0])
+        {
+            this.file = fileInput.target.files[0];
+            var reader = new FileReader();
+
+            reader.onload = ( e : any) => {
+                this.previewSrc = e.target.result;
+            }
+
+            reader.readAsDataURL(fileInput.target.files[0]);
+        }
+        else{
+            this.previewSrc = null;
+            this.file = null;
+        }
+    }
+    public addNewPin(titleInput: HTMLInputElement, textInput: HTMLInputElement){
+        if(titleInput.value && textInput.value && this.file){
+            // upload file and create new pin using pin service
+        }
     }
 }

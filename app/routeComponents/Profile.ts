@@ -15,7 +15,7 @@ import PinService from './../services/PinService';
             <div class="row">
                 <img class="img-thumbnail col-md-4" [src]="user.profileImageUrl" style="width:190px;"/>
                 <div class="col-md-8">
-                   <h3>{{user.firstName}} {{user.lastName}} <button class="btn btn-success" *ngIf="user.doesCurrentUserFollowThisUser" (click)="followUser()">Follow</button><button class="btn btn-outline-success" *ngIf="!user.doesCurrentUserFollowThisUser" (click)="unfollowUser()">Unfollow</button></h3>
+                   <h3>{{user.firstName}} {{user.lastName}} <button class="btn btn-success" *ngIf="!user.doesCurrentUserFollowThisUser" (click)="followUser()">Follow</button><button class="btn btn-outline-success" *ngIf="user.doesCurrentUserFollowThisUser" (click)="unfollowUser()">Unfollow</button></h3>
                 </div>
             </div>
             <br>

@@ -7,13 +7,13 @@ import UserService from './../services/UserService';
     selector: "find", 
     template: `
         <div class="container">
-            <form class="form-inline">
+            <div class="form-inline">
                 <div class="form-group">
                     <label>Name</label>
-                    <input type="text" class="form-control" placeholder="Jane Doe">
+                    <input type="text" class="form-control" placeholder="Jane Doe" #searchStringInput>
                 </div>
-                <button type="submit" class="btn btn-primary">Find profile</button>
-            </form>
+                <button class="btn btn-primary" (click)="searchUsers(searchStringInput)">Find profile</button>
+            </div>
             <br>
             <div class="col-md-7">
                 <h4>Search results</h4>
@@ -22,7 +22,9 @@ import UserService from './../services/UserService';
                     <div class="row">
                         <img class="img-thumbnail col-md-4" [src]="user.profileImageUrl" style="width:100px;"/>
                         <a class="col-md-8" [routerLink]="'/profile/' + user.id" style="color:black; font-size:20px; text-decoration:none;">{{user.firstName}} {{user.lastName}}</a>
-                        <button class="btn btn-success" *ngIf="user.doesCurrentUserFollowThisUser" (click)="followUser(user)">Follow</button>
+                        <button class="btn btn-success" *ngIf="!user.doesCurrentUserFollowThisUser" (click)="followUser(user)">Follow</button>
+                        <i class="glyphicon glyphicon-ok" style="color: green; font-size: 18pt;"></i>
+                        <span *ngIf="user.doesCurrentUserFollowThisUser" style="color:green;"><i class="fa fa-check-circle-o" style="font-size:18px;"></i> Followed</span>
                     </div>
                     <hr>
                 </div>
@@ -51,7 +53,7 @@ export default class FindUsersComponent {
     constructor(userService: UserService){
         this.userService = userService;
         this.followedUsers = this.userService.getFolowedUsers();
-        this.searchResultUsers = this.userService.getUsersBySearchString("Test");//Hardkoooooood
+        this.searchResultUsers = this.userService.getUsersBySearchString("A");//Hardkoooooood
     }
 
     public followUser(user: User){
@@ -59,5 +61,12 @@ export default class FindUsersComponent {
     }
     public unfollowUser(user: User){
         this.userService.unfollowUser(user);
+    }
+    public searchUsers(searchStringInput: HTMLInputElement){
+        if(searchStringInput.value == "")
+        {
+            this.searchResultUsers = this.userService.getUsersBySearchString(searchStringInput.value);
+            searchStringInput.value = "";
+        }
     }
 }

@@ -64,7 +64,7 @@ export default class PinComponent{
         this.pinService.deletePin(this.pin);
     }
     public deleteComment(id: number){
-        this.pinService.deleteComment(id);
+        this.pinService.deleteComment(this.pin, id);
     }
     public postComment(commentInput: HTMLInputElement){
         if(commentInput.value != "")

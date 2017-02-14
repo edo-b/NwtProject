@@ -3,11 +3,15 @@ import User from './../models/User';
 
 @Injectable()
 export default class UserService {
-    //for now returning dummy data
-    private dummyData: User[];
+    private currentlyFetchedFollowedUsers: User[];
+    private currentlyFetchedSearchResultUsers: User[];
     
     constructor() {
-        this.dummyData = [
+        this.currentlyFetchedFollowedUsers = this.createDummyData();
+        this.currentlyFetchedSearchResultUsers = this.createDummyData();
+    }
+    private createDummyData(){
+        return [
             new User(1, "Marko", "Matić", "https://image.freepik.com/free-icon/user-male-shape-in-a-circle-ios-7-interface-symbol_318-35357.jpg", true),
             new User(2, "Ante", "Antić", "https://upload.wikimedia.org/wikipedia/commons/d/d3/User_Circle.png", false),
             new User(3, "Luka", "Lukić", "http://www.ccusersforum.org/images/user.png", false),
@@ -22,15 +26,17 @@ export default class UserService {
     }
     public getFolowedUsers(){
         //retrieve users from server that current user follows
-        return this.dummyData;
+        this.currentlyFetchedFollowedUsers = this.createDummyData();
+        return this.currentlyFetchedFollowedUsers;
     } 
     public getUsersBySearchString(searchString: string){
         //retrieve users from server that have searchString in fullname
-        return this.dummyData;
+        this.currentlyFetchedSearchResultUsers = this.createDummyData();
+        return this.currentlyFetchedSearchResultUsers;
     }
     public getUserById(id: number){
         //get user from server
-        return this.dummyData.find(x => x.id == id);
+        return this.currentlyFetchedSearchResultUsers.find(x => x.id == id);
     }
     public getCurrentUser(){
         //get user of this session from server
@@ -41,10 +47,10 @@ export default class UserService {
     }
     public followUser(user: User){
         // Follow user on server
-
+        user.doesCurrentUserFollowThisUser = true;
     }
     public unfollowUser(user: User){
         // Unfollow user on server
-        
+        user.doesCurrentUserFollowThisUser = false;
     }
 }

@@ -27,7 +27,7 @@ export default class PinService {
                         "This is a test comment"
                         ),
                     new Comment(
-                        1,
+                        2,
                         new User(2, "Ante", "Antić", "https://upload.wikimedia.org/wikipedia/commons/d/d3/User_Circle.png", true),
                         "This is a test comment"
                         )
@@ -49,7 +49,7 @@ export default class PinService {
                 new User(9, "Martina", "Martinić", "http://colorvisiontesting.com/images/plate%20with%205.jpg", false),
                 [
                     new Comment(
-                        1,
+                        3,
                         new User(9, "Martina", "Martinić", "http://colorvisiontesting.com/images/plate%20with%205.jpg", true),
                         "This is a test comment"
                         )
@@ -72,17 +72,17 @@ export default class PinService {
                 new User(10, "Anamarija", "Abeceić", "https://www.sencha.com/wp-content/uploads/2016/02/icon-sencha-test-studio.png", false),
                 [
                     new Comment(
-                        1,
+                        4,
                         new User(9, "Martina", "Martinić", "http://colorvisiontesting.com/images/plate%20with%205.jpg", false),
                         "This is a test comment"
                         ),
                     new Comment(
-                        1,
+                        5,
                         new User(10, "Anamarija", "Abeceić", "https://www.sencha.com/wp-content/uploads/2016/02/icon-sencha-test-studio.png", true),
                         "This is a test comment"
                         ),
                     new Comment(
-                        1,
+                        6,
                         new User(1, "Marko", "Matić", "https://image.freepik.com/free-icon/user-male-shape-in-a-circle-ios-7-interface-symbol_318-35357.jpg", true),
                         "This is a test comment"
                         )
@@ -112,9 +112,9 @@ export default class PinService {
         //delete pin on server
         this.currentPins.splice(this.currentPins.indexOf(pinToDelete), 1);
     }
-    public deleteComment(commentId: number){
+    public deleteComment(pin: Pin, commentId: number){
         //delete comment on server
-        this.currentPins[0].comments.splice(this.currentPins[0].comments.indexOf(this.currentPins[0].comments.find(x=>x.id == commentId)), 1);
+        this.currentPins[this.currentPins.indexOf(pin)].comments.splice(this.currentPins[this.currentPins.indexOf(pin)].comments.indexOf(this.currentPins[this.currentPins.indexOf(pin)].comments.find(x=>x.id == commentId)), 1);
     }
     public postComment(pin: Pin, text: string){
         //Post comment on server and retrieve ID
