@@ -120,9 +120,6 @@ export default class PinService {
         //Post comment on server and retrieve ID
         this.currentPins[this.currentPins.indexOf(pin)].comments.push(new Comment(777, new User(777, "Test", "User", null, null), text));
     }
-    public addNewPin(){
-        //Add new pin to server - file upload for picture
-    }
     public likePin(pin: Pin){
         //Like pin on server
         this.currentPins[this.currentPins.indexOf(pin)].didCurrentUserLikePin = true;
@@ -130,5 +127,9 @@ export default class PinService {
     public unlikePin(pin: Pin){
         //Unike pin on server
         this.currentPins[this.currentPins.indexOf(pin)].didCurrentUserLikePin = false;
+    }
+    public createNewPin(pinTitle: string, pinText: string, imageFile: File){
+        //upload picture to server and create pin on server
+        this.currentPins.push(new Pin("", pinText, pinTitle, null, false, 0, new User(777, "Test", "User", null, null), null))
     }
 }

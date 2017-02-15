@@ -12,7 +12,7 @@ import PinService from './../services/PinService';
             <div class="row">
                 <div class="col-md-2"></div>
                 <div class="col-md-8">
-                    <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#newPinModal">
+                    <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#newPinModal" (click)="emptyModal(titleInput, textInput, fileInput)">
                         Add new pin
                     </button>
                 </div>
@@ -45,7 +45,7 @@ import PinService from './../services/PinService';
                         </div>
                         <div class="form-group">
                             <label>Add image</label>
-                            <input type="file" class="form-control" placeholder="Choose file" (change)="fileChangeEvent($event)" accept="image/*">
+                            <input type="file" class="form-control" placeholder="Choose file" (change)="fileChangeEvent($event)" accept="image/*" #fileInput>
                         </div>
                         <div id="image-preview-div" *ngIf="previewSrc">
                             <img id="preview-image" [src]="previewSrc">
@@ -53,7 +53,7 @@ import PinService from './../services/PinService';
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" (click)="addNewPin(titleInput, textInput)">Add new pin</button> 
+                    <button class="btn btn-primary" (click)="addNewPin(titleInput, textInput)" data-dismiss="modal">Add new pin</button> 
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
                 </div><!-- /.modal-content -->
@@ -70,7 +70,14 @@ export default class HomeRouteComponent {
         this.dummyPins = pinservice.getNewsFeedPins();
         this.pinService = pinservice;
     }
-    fileChangeEvent(fileInput: any){
+    public emptyModal(titleInput: HTMLInputElement, textInput: HTMLInputElement, fileInput: HTMLInputElement){
+        titleInput.value = null;
+        textInput.value = null;
+        fileInput.value = null;
+        this.file = null;
+        this.previewSrc = null;
+    }
+    public fileChangeEvent(fileInput: any){
         if(fileInput.target.files && fileInput.target.files[0])
         {
             this.file = fileInput.target.files[0];
@@ -89,7 +96,8 @@ export default class HomeRouteComponent {
     }
     public addNewPin(titleInput: HTMLInputElement, textInput: HTMLInputElement){
         if(titleInput.value && textInput.value && this.file){
-            // upload file and create new pin using pin service
+            this.pinService.createNewPin(titleInput.value, textInput.value, this.file);
         }
+        
     }
 }
