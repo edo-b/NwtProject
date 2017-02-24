@@ -9,18 +9,21 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using NwtProjectServer.Models;
+using System.Web.Http.Cors;
+using NwtProjectServer.Models.ViewModels;
 
 namespace NwtProjectServer.Controllers
 {
+    [EnableCors(origins: "http://localhost:3000", headers: "*", methods: "*")]
     public class PinsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Pins
-        public IQueryable<Pin> GetPins()
+        public List<PinViewModel> GetPins()
         {
-            var test = db.Pins.ToList();
-            return db.Pins;
+            var pins = db.Pins.ToList();
+            return pins.Select(x => PinViewModel.CreateObjectFromDatabaseObject(x)).ToList();
         }
 
         // GET: api/Pins/5

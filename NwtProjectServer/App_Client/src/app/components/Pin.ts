@@ -29,7 +29,7 @@ import PinService from './../services/PinService';
                             <h5>Comments:</h5>
                             <div *ngFor="let comment of pin.comments">
                                 <hr>
-                                <b><a [routerLink]="'/profile/' + comment.creator.id" style="color:#686868;">{{comment.creator.firstName}} {{comment.creator.lastName}}</a></b>: 
+                                <b><a [routerLink]="'/profile/' + comment.createdBy.id" style="color:#686868;">{{comment.createdBy.firstName}} {{comment.createdBy.lastName}}</a></b>: 
                                 <span>{{comment.text}}</span>
                                 <span style="cursor:pointer;" (click)="deleteComment(comment.id)" *ngIf="isEditMode">&times;</span>
                             </div>

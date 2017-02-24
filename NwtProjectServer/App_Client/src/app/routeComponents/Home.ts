@@ -18,7 +18,7 @@ import PinService from './../services/PinService';
 
         <br>
 
-        <pin *ngFor="let pin of dummyPins" [pin]=pin [isEditMode]=false></pin>
+        <pin *ngFor="let pin of newsFeedPins" [pin]=pin [isEditMode]=false></pin>
 
         <!--Add new pin modal-->
         <div class="modal fade" id="newPinModal">
@@ -58,13 +58,20 @@ import PinService from './../services/PinService';
         </div><!-- /.modal -->`
 })
 export default class HomeRouteComponent {
-    private dummyPins: Pin[];
+    private newsFeedPins: Pin[];
     private pinService: PinService;
     private file: File;
     public previewSrc: string;
 
     constructor(pinservice: PinService) {
-        this.dummyPins = pinservice.getNewsFeedPins();
+        this.newsFeedPins = [];
+        pinservice.getNewsFeedPins()
+            .subscribe(
+            data => {
+                data.forEach(it => this.newsFeedPins.push(new Pin(it.id, it.imageUrl, it.text, it.title, it.postedOn, false, it.numberOfLikes, it.createdBy, it.comments)));
+            },
+            error => console.log("Error when getting Pins")
+            );
         this.pinService = pinservice;
     }
     public emptyModal(titleInput: HTMLInputElement, textInput: HTMLInputElement, fileInput: HTMLInputElement){
