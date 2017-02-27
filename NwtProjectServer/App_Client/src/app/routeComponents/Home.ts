@@ -106,12 +106,19 @@ export default class HomeRouteComponent {
                     error => console.log("Error when deleting comment Pins")
                     );
                 break;
-            case "post": //HARDKOOOOOOOD!!!!
+            case "post":
                 let text = evt.text;
-                if (!this.newsFeedPins[this.newsFeedPins.indexOf(pin)].comments) {
-                    this.newsFeedPins[this.newsFeedPins.indexOf(pin)].comments = [];
-                }
-                this.newsFeedPins[this.newsFeedPins.indexOf(pin)].comments.push(new Comment(777, new User(777, "Test", "User", null, null), text));
+                this.pinService.postComment(pin, text)
+                    .subscribe(
+                    response => {
+                        let comment = response.json();
+                        if (!this.newsFeedPins[this.newsFeedPins.indexOf(pin)].comments) {
+                            this.newsFeedPins[this.newsFeedPins.indexOf(pin)].comments = [];
+                        }
+                        this.newsFeedPins[this.newsFeedPins.indexOf(pin)].comments.push(comment);
+                    },
+                    error => console.log("Error when posting comment")
+                    );
                 break;
         }
     }

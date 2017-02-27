@@ -172,12 +172,26 @@ namespace NwtProjectServer.Controllers
         }
 
         [HttpPost]
-        [ResponseType(typeof(void))]
-        public IHttpActionResult CommentPin(int id)
+        [ResponseType(typeof(Comment))]
+        public IHttpActionResult CommentPin(Comment comment)
         {
-            
+            var Id = comment.Id;
+            var Text = comment.Text;
+            var dbPin = db.Pins.Find(Id);
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            if (dbPin == null)
+            {
+                return NotFound();
+            }
+            if(String.IsNullOrEmpty(Text) || user == null)
+            {
+                return BadRequest(); 
+            }
+            var newComment = new Comment { Text = Text, CreatedBy = user };
+            dbPin.Comments.Add(newComment);
+            db.SaveChanges();
 
-            return Ok();
+            return Ok(CommentViewModel.CreateObjectFromDatabaseObject(newComment));
         }
 
         protected override void Dispose(bool disposing)

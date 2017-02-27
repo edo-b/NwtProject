@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response  } from '@angular/http';
+import { Http, Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
@@ -62,8 +62,7 @@ export default class PinService {
         return this.http.post('http://localhost:31696/api/Pins/DeleteComment/' + commentId, { id: commentId });
     }
     public postComment(pin: Pin, text: string) {
-        //Post comment on server and retrieve ID
-        this.currentPins[this.currentPins.indexOf(pin)].comments.push(new Comment(777, new User(777, "Test", "User", null, null), text));
+        return this.http.post('http://localhost:31696/api/Pins/CommentPin/' + pin.id, {Id: pin.id, Text: text});
     }
     public likePin(pin: Pin) {
         //Like pin on server
