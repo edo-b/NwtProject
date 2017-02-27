@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 
 import Pin from './../models/Pin';
+import User from './../models/User';
+import Comment from './../models/Comment';
 import PinService from './../services/PinService';
 
 @Component({
@@ -18,7 +20,7 @@ import PinService from './../services/PinService';
 
         <br>
 
-        <pin *ngFor="let pin of newsFeedPins" [pin]=pin [isEditMode]=false></pin>
+        <pin *ngFor="let pin of newsFeedPins" (likeDeleteEvent)="likeDelete($event)" (commentEvent)="commentEvent($event)" [pin]=pin [isEditMode]=false></pin>
 
         <!--Add new pin modal-->
         <div class="modal fade" id="newPinModal">
@@ -73,6 +75,45 @@ export default class HomeRouteComponent {
             error => console.log("Error when getting Pins")
             );
         this.pinService = pinservice;
+    }
+    public likeDelete(evt: any) {
+        let pin = evt.pin;
+        let action = evt.action;
+        switch (action) {
+            case "like":
+                this.newsFeedPins[this.newsFeedPins.indexOf(pin)].didCurrentUserLikePin = true;
+                break;
+            case "unlike":
+                this.newsFeedPins[this.newsFeedPins.indexOf(pin)].didCurrentUserLikePin = false;
+                break;
+            case "delete":
+                this.newsFeedPins.splice(this.newsFeedPins.indexOf(pin), 1);
+                break;
+        }
+    }
+
+    public commentEvent(evt: any) {
+        let action = evt.action;
+        let pin = evt.pin;
+        switch (action) {
+            case "delete":
+                let commentId = evt.commentId;
+                this.pinService.deleteComment(pin, commentId)
+                    .subscribe(
+                    response => {
+                        this.newsFeedPins[this.newsFeedPins.indexOf(pin)].comments.splice(this.newsFeedPins[this.newsFeedPins.indexOf(pin)].comments.indexOf(this.newsFeedPins[this.newsFeedPins.indexOf(pin)].comments.find(x => x.id == commentId)), 1);
+                    },
+                    error => console.log("Error when deleting comment Pins")
+                    );
+                break;
+            case "post": //HARDKOOOOOOOD!!!!
+                let text = evt.text;
+                if (!this.newsFeedPins[this.newsFeedPins.indexOf(pin)].comments) {
+                    this.newsFeedPins[this.newsFeedPins.indexOf(pin)].comments = [];
+                }
+                this.newsFeedPins[this.newsFeedPins.indexOf(pin)].comments.push(new Comment(777, new User(777, "Test", "User", null, null), text));
+                break;
+        }
     }
     public emptyModal(titleInput: HTMLInputElement, textInput: HTMLInputElement, fileInput: HTMLInputElement){
         titleInput.value = null;

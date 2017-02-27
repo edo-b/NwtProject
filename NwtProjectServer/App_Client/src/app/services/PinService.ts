@@ -59,8 +59,7 @@ export default class PinService {
         this.currentPins.splice(this.currentPins.indexOf(pinToDelete), 1);
     }
     public deleteComment(pin: Pin, commentId: number) {
-        //delete comment on server
-        this.currentPins[this.currentPins.indexOf(pin)].comments.splice(this.currentPins[this.currentPins.indexOf(pin)].comments.indexOf(this.currentPins[this.currentPins.indexOf(pin)].comments.find(x => x.id == commentId)), 1);
+        return this.http.post('http://localhost:31696/api/Pins/DeleteComment/' + commentId, { id: commentId });
     }
     public postComment(pin: Pin, text: string) {
         //Post comment on server and retrieve ID

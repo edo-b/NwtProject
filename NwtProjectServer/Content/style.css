@@ -44,3 +44,10 @@
     margin-left: auto; 
     margin-right: auto
 }
+.logged-in-username{
+    color:#bfbfbf;
+    margin-right:10px;
+}
+.logged-in-username:hover{
+    color:#5bc0de;
+}

@@ -11,6 +11,8 @@ using System.Web.Http.Description;
 using NwtProjectServer.Models;
 using System.Web.Http.Cors;
 using NwtProjectServer.Models.ViewModels;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace NwtProjectServer.Controllers
 {
@@ -18,6 +20,15 @@ namespace NwtProjectServer.Controllers
     public class PinsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        /// <summary>
+        /// User manager - attached to application DB context
+        /// </summary>
+        protected UserManager<ApplicationUser> UserManager { get; set; }
+
+        public PinsController()
+        {
+            this.UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(this.db));
+        }
 
         // GET: api/Pins
         public List<PinViewModel> GetPins()
@@ -103,6 +114,70 @@ namespace NwtProjectServer.Controllers
             db.SaveChanges();
 
             return Ok(pin);
+        }
+
+        [HttpPost]
+        [ResponseType(typeof(void))]
+        public IHttpActionResult LikePin(int id)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            var dbPin = db.Pins.Find(id);
+            if(dbPin == null)
+            {
+                return NotFound();
+            }
+            if(dbPin.UsersThatLikedThisPin.Contains(user))
+            {
+                return BadRequest();
+            }
+            dbPin.UsersThatLikedThisPin.Add(user);
+            db.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [ResponseType(typeof(void))]
+        public IHttpActionResult UnikePin(int id)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            var dbPin = db.Pins.Find(id);
+            if (dbPin == null)
+            {
+                return NotFound();
+            }
+            if (!dbPin.UsersThatLikedThisPin.Contains(user))
+            {
+                return BadRequest();
+            }
+            dbPin.UsersThatLikedThisPin.Remove(user);
+            db.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [ResponseType(typeof(void))]
+        public IHttpActionResult DeleteComment(int id)
+        {
+            var dbComment = db.Comments.Find(id);
+            if (dbComment == null)
+            {
+                return NotFound();
+            }
+            db.Comments.Remove(dbComment);
+            db.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [ResponseType(typeof(void))]
+        public IHttpActionResult CommentPin(int id)
+        {
+            
+
+            return Ok();
         }
 
         protected override void Dispose(bool disposing)

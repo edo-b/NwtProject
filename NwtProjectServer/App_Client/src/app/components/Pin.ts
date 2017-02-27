@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import Pin from './../models/Pin';
 import PinService from './../services/PinService';
@@ -49,34 +49,37 @@ import PinService from './../services/PinService';
     `
 })
 export default class PinComponent{
-    @Input() 
+    @Input()
     public pin: Pin;
     @Input()
     public isEditMode: boolean;
+    @Output()
+    public likeDeleteEvent = new EventEmitter();
+    @Output()
+    public commentEvent = new EventEmitter();
 
     private pinService: PinService;
 
-    constructor(pinService: PinService){
+    constructor(pinService: PinService) {
         this.pinService = pinService;
     }
 
-    public deletePin(){
-        this.pinService.deletePin(this.pin);
+    public deletePin() {
+        this.likeDeleteEvent.emit({ pin: this.pin, action: 'delete' });
     }
-    public deleteComment(id: number){
-        this.pinService.deleteComment(this.pin, id);
+    public deleteComment(id: number) {
+        this.commentEvent.emit({ action: 'delete', pin: this.pin, commentId: id });
     }
-    public postComment(commentInput: HTMLInputElement){
-        if(commentInput.value != "")
-        {
-            this.pinService.postComment(this.pin, commentInput.value);
+    public postComment(commentInput: HTMLInputElement) {
+        if (commentInput.value != "") {
+            this.commentEvent.emit({ action: 'post', pin: this.pin, text: commentInput.value });
             commentInput.value = "";
         }
     }
-    public likePin(){
-        this.pinService.likePin(this.pin);
+    public likePin() {
+        this.likeDeleteEvent.emit({ pin: this.pin, action: 'like' });
     }
-    public unlikePin(){
-        this.pinService.unlikePin(this.pin);
+    public unlikePin() {
+        this.likeDeleteEvent.emit({ pin: this.pin, action: 'unlike' });
     }
 }

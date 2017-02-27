@@ -5,7 +5,7 @@
     {
     @Html.AntiForgeryToken()
     <div class="account-buttons">
-        @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+        @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "logged-in-username" })
         <a href="javascript:document.getElementById('logoutForm').submit()" class = "btn btn-outline-info">Log off</a>
     </div>
     }
