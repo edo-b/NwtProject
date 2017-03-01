@@ -50,8 +50,24 @@ export default class FindUsersComponent {
 
     constructor(userService: UserService){
         this.userService = userService;
-        this.followedUsers = this.userService.getFolowedUsers();
-        this.searchResultUsers = this.userService.getUsersBySearchString("A");//Hardkoooooood
+        this.followedUsers = [];
+        this.searchResultUsers = [];
+        this.userService.getFolowedUsers()
+                        .subscribe(
+                            data => {
+                                let serverItems: Array<any> = data.json();
+                                serverItems.forEach(it => this.followedUsers.push(new User(it.id, it.firstName, it.lastName, it.profileImageUrl, it.doesCurrentUserFollowThisUser)));
+                            },
+                            error => console.log("Error when getting followed users")
+                            );
+        this.userService.getAllUsers()
+            .subscribe(
+            data => {
+                let serverItems: Array<any> = data.json();
+                serverItems.forEach(it => this.searchResultUsers.push(new User(it.id, it.firstName, it.lastName, it.profileImageUrl, it.doesCurrentUserFollowThisUser)));
+            },
+            error => console.log("Error when getting all users")
+            );
     }
 
     public followUser(user: User){

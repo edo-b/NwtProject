@@ -49,7 +49,7 @@ export default class PinService {
 
         return this.currentPins;
     }
-    public getPinsOfUser(id: number) {
+    public getPinsOfUser(id: string) {
         //this.currentPins = this.getTestPins();
 
         return this.currentPins;
@@ -74,6 +74,6 @@ export default class PinService {
     }
     public createNewPin(pinTitle: string, pinText: string, imageFile: File) {
         //upload picture to server and create pin on server
-        this.currentPins.push(new Pin(15, "", pinText, pinTitle, null, false, 0, new User(777, "Test", "User", null, null), null))
+        this.currentPins.push(new Pin(15, "", pinText, pinTitle, null, false, 0, new User("asdfaef", "Test", "User", null, null), null))
     }
 }

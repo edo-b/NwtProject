@@ -43,8 +43,8 @@ export default class ProfileComponent {
     private currentUserEmail: string;
 
     constructor(userService: UserService){
-        this.userService = userService;
-        this.currentUser = this.userService.getCurrentUser();
-        this.currentUserEmail = this.userService.getCurrentUserEMail();
+        //this.userService = userService;
+        //this.currentUser = this.userService.getCurrentUser();
+        //this.currentUserEmail = this.userService.getCurrentUserEMail();
     }
 }

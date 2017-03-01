@@ -20,9 +20,6 @@ namespace NwtProjectServer.Controllers
     public class PinsController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        /// <summary>
-        /// User manager - attached to application DB context
-        /// </summary>
         protected UserManager<ApplicationUser> UserManager { get; set; }
 
         public PinsController()

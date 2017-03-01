@@ -35,25 +35,42 @@ export default class ProfileComponent {
     private pinService: PinService;
     private route: ActivatedRoute;
 
-    private id: number;
+    private id: string;
     private user: User;
     private userPins: Pin[];
     constructor(route: ActivatedRoute, userService: UserService, pinService: PinService){
         this.route = route;
         this.userService = userService;
         this.pinService = pinService;
+        this.user = new User("", "", "", "", false);
 
         this.id = route.snapshot.params["id"];
-        this.user = userService.getUserById(this.id);
-        this.userPins = pinService.getPinsOfUser(this.id);
+        this.userService.getUserById(this.id)
+                    .subscribe(
+                        response => {
+                            let user = response.json();
+                            this.user = user;
+                        },
+                        error => console.log("Error when getting user")
+                    );
+        //this.userPins = pinService.getPinsOfUser(this.id);
+        //POkupi pinove tog usera
     }
 
     //Subscribe to id change and refresh data (same route revisited doesnt refresh data)
     ngOnInit() {
         this.route.params.subscribe(params => {
             this.id = params['id'];
-            this.user = this.userService.getUserById(this.id);
-            this.userPins = this.pinService.getPinsOfUser(this.id);
+            this.userService.getUserById(this.id)
+                .subscribe(
+                    response => {
+                        let user = response.json();
+                        this.user = user;
+                    },
+                    error => console.log("Error when getting user")
+                );
+            //this.userPins = this.pinService.getPinsOfUser(this.id);
+            //POkupi pinove tog usera
          });
         }
     public followUser(){
