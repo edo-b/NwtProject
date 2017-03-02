@@ -9,7 +9,7 @@ import UserService from './../services/UserService';
         <div class="form-inline">
             <div class="form-group">
                 <label>Name</label>
-                <input type="text" class="form-control" placeholder="Jane Doe" #searchStringInput>
+                <input type="text" class="form-control" placeholder="Jane Doe" (keyup.enter)="searchUsers(searchStringInput)" #searchStringInput>
             </div>
             <button class="btn btn-primary" (click)="searchUsers(searchStringInput)">Find profile</button>
         </div>
@@ -56,18 +56,22 @@ export default class FindUsersComponent {
                         .subscribe(
                             data => {
                                 let serverItems: Array<any> = data.json();
-                                serverItems.forEach(it => this.followedUsers.push(new User(it.id, it.firstName, it.lastName, it.profileImageUrl, it.doesCurrentUserFollowThisUser)));
+                                if (serverItems) {
+                                    serverItems.forEach(it => this.followedUsers.push(new User(it.id, it.firstName, it.lastName, it.profileImageUrl, it.doesCurrentUserFollowThisUser)));
+                                }
                             },
                             error => console.log("Error when getting followed users")
                             );
         this.userService.getAllUsers()
-            .subscribe(
-            data => {
-                let serverItems: Array<any> = data.json();
-                serverItems.forEach(it => this.searchResultUsers.push(new User(it.id, it.firstName, it.lastName, it.profileImageUrl, it.doesCurrentUserFollowThisUser)));
-            },
-            error => console.log("Error when getting all users")
-            );
+                        .subscribe(
+                        data => {
+                            let serverItems: Array<any> = data.json();
+                            if (serverItems) {
+                                serverItems.forEach(it => this.searchResultUsers.push(new User(it.id, it.firstName, it.lastName, it.profileImageUrl, it.doesCurrentUserFollowThisUser)));
+                            }
+                        },
+                        error => console.log("Error when getting all users")
+                        );
     }
 
     public followUser(user: User){
@@ -77,9 +81,22 @@ export default class FindUsersComponent {
         this.userService.unfollowUser(user);
     }
     public searchUsers(searchStringInput: HTMLInputElement){
-        if(searchStringInput.value == "")
+        if(searchStringInput.value != "")
         {
-            this.searchResultUsers = this.userService.getUsersBySearchString(searchStringInput.value);
+            this.userService.getUsersBySearchString(searchStringInput.value)
+                            .subscribe(
+                                data => {
+                                            this.searchResultUsers = [];
+                                            let serverItems: Array<any> = data.json();
+                                            if (serverItems) {
+                                                serverItems.forEach(it => this.searchResultUsers.push(new User(it.id, it.firstName, it.lastName, it.profileImageUrl, it.doesCurrentUserFollowThisUser)));
+                                            }
+                                },
+                                error => {
+                                    console.log("Error when getting all users");
+                                    this.searchResultUsers = [];
+                                }
+                            );
             searchStringInput.value = "";
         }
     }

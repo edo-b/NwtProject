@@ -70,7 +70,9 @@ export default class HomeRouteComponent {
         pinservice.getNewsFeedPins()
             .subscribe(
             data => {
-                data.forEach(it => this.newsFeedPins.push(new Pin(it.id, it.imageUrl, it.text, it.title, it.postedOn, false, it.numberOfLikes, it.createdBy, it.comments)));
+                if (data) {
+                    data.forEach(it => this.newsFeedPins.push(new Pin(it.id, it.imageUrl, it.text, it.title, it.postedOn, false, it.numberOfLikes, it.createdBy, it.comments)));
+                }
             },
             error => console.log("Error when getting Pins")
             );

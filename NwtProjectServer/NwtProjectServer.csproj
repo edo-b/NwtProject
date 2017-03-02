@@ -306,6 +306,8 @@
   <ItemGroup>
     <Folder Include="App_Client\src\" />
     <Folder Include="App_Data\" />
+    <Folder Include="Content\Images\PinImages\" />
+    <Folder Include="Content\Images\ProfileImages\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

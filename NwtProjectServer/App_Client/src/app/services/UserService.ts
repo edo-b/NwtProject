@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response, URLSearchParams } from '@angular/http';
 
 import User from './../models/User';
 
@@ -13,16 +13,16 @@ export default class UserService {
         this.http = http;
     }
     public getAllUsers() {
-        //retrieve users from server that current user follows
         return this.http.get("http://localhost:31696/api/Users/AllUsers");
     }
     public getFolowedUsers(){
-        //retrieve users from server that current user follows
         return this.http.get("http://localhost:31696/api/Users/FollowedUsers");
     }
     public getUsersBySearchString(searchString: string){
-        //retrieve users from server that have searchString in fullname
-        return this.currentlyFetchedSearchResultUsers;
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('searchString', searchString);
+
+        return this.http.get("http://localhost:31696/api/Users/UsersByString", { search: params });
     }
     public getUserById(id: string){
         return this.http.get("http://localhost:31696/api/Users/GetUser/" + id);

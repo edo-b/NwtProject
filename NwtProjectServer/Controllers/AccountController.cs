@@ -151,7 +151,19 @@ namespace NwtProjectServer.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
+                var pictureUrl = "https://www.arbeidslys.no/templates/newyork/images/no_image.png";
+                if(model.PictureFile != null &&
+                    (model.PictureFile.ContentType == "image/jpg" || model.PictureFile.ContentType == "image/jpeg" || model.PictureFile.ContentType == "image/png" || model.PictureFile.ContentType == "image/gif")
+                    )
+                {
+                    string pictureName = System.IO.Path.GetFileNameWithoutExtension(model.PictureFile.FileName) + DateTime.Now.ToString("yyyyMMddHHmmssfff") + System.IO.Path.GetExtension(model.PictureFile.FileName);
+                    pictureUrl = System.IO.Path.Combine(Server.MapPath("~/Content/Images/ProfileImages"), pictureName);
+
+                    model.PictureFile.SaveAs(pictureUrl);
+                    pictureUrl = "/Content/Images/ProfileImages/" + pictureName;
+                }
+
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, ProfileImageUrl = pictureUrl };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

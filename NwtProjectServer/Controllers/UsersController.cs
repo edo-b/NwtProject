@@ -58,6 +58,13 @@ namespace NwtProjectServer.Controllers
             return data.Select(x => UserViewModel.CreateObjectFromDatabaseObject(x)).ToList();
         }
 
+        [HttpGet]
+        public List<UserViewModel> UsersByString(string searchString)
+        {
+            var data = db.Users.Where(x => x.FirstName.Contains(searchString) || x.LastName.Contains(searchString)).ToList();
+            return data.Select(x => UserViewModel.CreateObjectFromDatabaseObject(x)).ToList();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
