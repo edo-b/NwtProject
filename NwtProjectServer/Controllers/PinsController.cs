@@ -113,6 +113,45 @@ namespace NwtProjectServer.Controllers
             return Ok(pin);
         }
 
+        [HttpGet]
+        public List<PinViewModel> MyPins()
+        {
+            var currentUser = db.Users.Find(User.Identity.GetUserId());
+
+            if(currentUser != null)
+            {
+                var query = from pin in db.Pins
+                            where pin.CreatedBy.Id == currentUser.Id
+                            select pin;
+                var pins = query.ToList();
+                if (pins != null)
+                {
+                    return pins.Select(x => PinViewModel.CreateObjectFromDatabaseObject(x)).ToList();
+                }
+            }
+
+            return null;
+        }
+
+        [HttpGet]
+        public List<PinViewModel> PinsOfUser(string id)
+        {
+            if(id == null)
+            {
+                return null;
+            }
+            var query = from pin in db.Pins
+                        where pin.CreatedBy.Id == id
+                        select pin;
+            var pins = query.ToList();
+            if (pins != null)
+            {
+                return pins.Select(x => PinViewModel.CreateObjectFromDatabaseObject(x)).ToList();
+            }
+
+            return null;
+        }
+
         [HttpPost]
         [ResponseType(typeof(void))]
         public IHttpActionResult LikePin(int id)
@@ -123,11 +162,12 @@ namespace NwtProjectServer.Controllers
             {
                 return NotFound();
             }
-            if(dbPin.UsersThatLikedThisPin.Contains(user))
+            if(user == null || dbPin.UsersThatLikedThisPin.Contains(user))
             {
                 return BadRequest();
             }
             dbPin.UsersThatLikedThisPin.Add(user);
+            dbPin.NumberOfLikes++;
             db.SaveChanges();
 
             return Ok();
@@ -135,7 +175,7 @@ namespace NwtProjectServer.Controllers
 
         [HttpPost]
         [ResponseType(typeof(void))]
-        public IHttpActionResult UnikePin(int id)
+        public IHttpActionResult UnlikePin(int id)
         {
             var user = UserManager.FindById(User.Identity.GetUserId());
             var dbPin = db.Pins.Find(id);
@@ -143,11 +183,12 @@ namespace NwtProjectServer.Controllers
             {
                 return NotFound();
             }
-            if (!dbPin.UsersThatLikedThisPin.Contains(user))
+            if (user == null || !dbPin.UsersThatLikedThisPin.Contains(user))
             {
                 return BadRequest();
             }
             dbPin.UsersThatLikedThisPin.Remove(user);
+            dbPin.NumberOfLikes--;
             db.SaveChanges();
 
             return Ok();

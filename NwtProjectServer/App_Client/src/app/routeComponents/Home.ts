@@ -70,8 +70,9 @@ export default class HomeRouteComponent {
         pinservice.getNewsFeedPins()
             .subscribe(
             data => {
-                if (data) {
-                    data.forEach(it => this.newsFeedPins.push(new Pin(it.id, it.imageUrl, it.text, it.title, it.postedOn, false, it.numberOfLikes, it.createdBy, it.comments)));
+                let serverItems: Array<any> = data.json();
+                if (serverItems) {
+                    serverItems.forEach(it => this.newsFeedPins.push(new Pin(it.id, it.imageUrl, it.text, it.title, it.postedOn, it.didCurrentUserLikePin, it.numberOfLikes, it.createdBy, it.comments)));
                 }
             },
             error => console.log("Error when getting Pins")
@@ -83,10 +84,24 @@ export default class HomeRouteComponent {
         let action = evt.action;
         switch (action) {
             case "like":
-                this.newsFeedPins[this.newsFeedPins.indexOf(pin)].didCurrentUserLikePin = true;
+                this.pinService.likePin(pin)
+                    .subscribe(
+                        response => {
+                            this.newsFeedPins[this.newsFeedPins.indexOf(pin)].didCurrentUserLikePin = true;
+                            this.newsFeedPins[this.newsFeedPins.indexOf(pin)].numberOfLikes++;
+                        },
+                        error => console.log("Error when sending like")
+                    );
                 break;
             case "unlike":
-                this.newsFeedPins[this.newsFeedPins.indexOf(pin)].didCurrentUserLikePin = false;
+                this.pinService.unlikePin(pin)
+                    .subscribe(
+                        response => {
+                            this.newsFeedPins[this.newsFeedPins.indexOf(pin)].didCurrentUserLikePin = false;
+                            this.newsFeedPins[this.newsFeedPins.indexOf(pin)].numberOfLikes--;
+                        },
+                        error => console.log("Error when sending unlike")
+                    );
                 break;
             case "delete":
                 this.newsFeedPins.splice(this.newsFeedPins.indexOf(pin), 1);

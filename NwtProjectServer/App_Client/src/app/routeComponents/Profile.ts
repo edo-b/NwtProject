@@ -43,23 +43,13 @@ export default class ProfileComponent {
         this.userService = userService;
         this.pinService = pinService;
         this.user = new User("", "", "", "", false);
-
-        this.id = route.snapshot.params["id"];
-        this.userService.getUserById(this.id)
-                    .subscribe(
-                        response => {
-                            let user = response.json();
-                            this.user = user;
-                        },
-                        error => console.log("Error when getting user")
-                    );
-        //this.userPins = pinService.getPinsOfUser(this.id);
-        //POkupi pinove tog usera
+        this.userPins = [];
     }
 
     //Subscribe to id change and refresh data (same route revisited doesnt refresh data)
     ngOnInit() {
         this.route.params.subscribe(params => {
+            this.userPins = [];
             this.id = params['id'];
             this.userService.getUserById(this.id)
                 .subscribe(
@@ -69,8 +59,16 @@ export default class ProfileComponent {
                     },
                     error => console.log("Error when getting user")
                 );
-            //this.userPins = this.pinService.getPinsOfUser(this.id);
-            //POkupi pinove tog usera
+            this.pinService.getPinsOfUser(this.id)
+                .subscribe(
+                data => {
+                    let serverItems: Array<any> = data.json();
+                    if (serverItems) {
+                        serverItems.forEach(it => this.userPins.push(new Pin(it.id, it.imageUrl, it.text, it.title, it.postedOn, it.didCurrentUserLikePin, it.numberOfLikes, it.createdBy, it.comments)));
+                    }
+                },
+                error => console.log("Error when getting My Pins")
+                );
          });
         }
 

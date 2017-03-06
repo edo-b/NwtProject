@@ -14,9 +14,19 @@ import PinService from './../services/PinService';
     `
 })
 export default class MyPinsComponent {
-    private dummyPins: Pin[];
+    private myPins: Pin[];
 
     constructor(pinservice: PinService) {
-        this.dummyPins = pinservice.getMyPins();
+        this.myPins = [];
+        pinservice.getMyPins()
+                .subscribe(
+                    data => {
+                        let serverItems: Array<any> = data.json();
+                        if (serverItems) {
+                            serverItems.forEach(it => this.myPins.push(new Pin(it.id, it.imageUrl, it.text, it.title, it.postedOn, it.didCurrentUserLikePin, it.numberOfLikes, it.createdBy, it.comments)));
+                        }
+                    },
+                    error => console.log("Error when getting My Pins")
+                );
     }
 }

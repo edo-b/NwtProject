@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ namespace NwtProjectServer.Models.ViewModels
         public string Title { get; set; }
         public string Text { get; set; }
         public DateTime PostedOn { get; set; }
+        public bool DidCurrentUserLikePin { get; set; }
         public int NumberOfLikes { get; set; }
         public UserViewModel CreatedBy { get; set; }
         public List<CommentViewModel> Comments { get; set; }
@@ -33,7 +35,22 @@ namespace NwtProjectServer.Models.ViewModels
             newPin.CreatedBy = UserViewModel.CreateObjectFromDatabaseObject(pin.CreatedBy);
             newPin.Comments = pin.Comments.Select(x => CommentViewModel.CreateObjectFromDatabaseObject(x)).ToList();
 
-            return newPin;
+            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+            {
+                var db = new ApplicationDbContext();
+                var currentUser = db.Users.Find(System.Web.HttpContext.Current.User.Identity.GetUserId());
+
+                if(pin.UsersThatLikedThisPin.FirstOrDefault(x => x.Id == currentUser.Id) != null)
+                {
+                    newPin.DidCurrentUserLikePin = true;
+                }
+                else
+                {
+                    newPin.DidCurrentUserLikePin = false;
+                }
+            }
+
+                return newPin;
         }
     }
 }
