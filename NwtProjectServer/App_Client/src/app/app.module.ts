@@ -11,8 +11,6 @@ import Profile from './routeComponents/Profile';
 import UpdateProfile from './routeComponents/UpdateProfile';
 import FindUsers from './routeComponents/FindUsers';
 import PageNotFound from './routeComponents/PageNotFound';
-import Login from './routeComponents/Login';
-import Register from './routeComponents/Register';
 import MyPins from './routeComponents/MyPins';
 
 import Pin from './components/Pin';
@@ -33,7 +31,7 @@ import Pin from './components/Pin';
       { path: '**', component: PageNotFound }
     ], { useHash: true })
   ],
-  declarations: [ AppComponent, Home, PageNotFound, Profile, UpdateProfile, FindUsers, Login, Register, MyPins, Pin],
+  declarations: [ AppComponent, Home, PageNotFound, Profile, UpdateProfile, FindUsers, MyPins, Pin],
   providers: [],
   bootstrap:    [ AppComponent ]
 })

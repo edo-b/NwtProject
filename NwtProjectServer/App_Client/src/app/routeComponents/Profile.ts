@@ -73,10 +73,23 @@ export default class ProfileComponent {
             //POkupi pinove tog usera
          });
         }
-    public followUser(){
-        this.userService.followUser(this.user);
+
+    public followUser() {
+        this.userService.followUser(this.user)
+            .subscribe(
+            data => {
+                this.user.doesCurrentUserFollowThisUser = true;
+            },
+            error => console.log("Error when following user!")
+            );
     }
-    public unfollowUser(){
-        this.userService.unfollowUser(this.user);
+    public unfollowUser() {
+        this.userService.unfollowUser(this.user)
+            .subscribe(
+            data => {
+                this.user.doesCurrentUserFollowThisUser = false;
+            },
+            error => console.log("Error when unfollowing user!")
+            );
     }
 }

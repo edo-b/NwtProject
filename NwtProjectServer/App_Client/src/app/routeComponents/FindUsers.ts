@@ -75,10 +75,22 @@ export default class FindUsersComponent {
     }
 
     public followUser(user: User){
-        this.userService.followUser(user);
+        this.userService.followUser(user)
+                        .subscribe(
+                            data => {
+                                user.doesCurrentUserFollowThisUser = true;
+                            },
+                            error => console.log("Error when following user!")
+                        );
     }
     public unfollowUser(user: User){
-        this.userService.unfollowUser(user);
+        this.userService.unfollowUser(user)
+                        .subscribe(
+                            data => {
+                                user.doesCurrentUserFollowThisUser = false;
+                            },
+                            error => console.log("Error when unfollowing user!")
+                        );
     }
     public searchUsers(searchStringInput: HTMLInputElement){
         if(searchStringInput.value != "")

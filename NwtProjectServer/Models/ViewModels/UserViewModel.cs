@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,8 +28,12 @@ namespace NwtProjectServer.Models.ViewModels
             newUser.ProfileImageUrl = user.ProfileImageUrl;
             if(System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
             {
-                // Check if followed
-                newUser.DoesCurrentUserFollowThisUser = false;
+                var db = new ApplicationDbContext();
+                var currentUser = db.Users.Find(System.Web.HttpContext.Current.User.Identity.GetUserId());
+                if(currentUser.FollowedUsers.FirstOrDefault(x => x.Id == user.Id) != null)
+                {
+                    newUser.DoesCurrentUserFollowThisUser = true;
+                }
             }
             else
             {

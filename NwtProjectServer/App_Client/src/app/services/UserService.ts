@@ -5,8 +5,6 @@ import User from './../models/User';
 
 @Injectable()
 export default class UserService {
-    private currentlyFetchedFollowedUsers: User[];
-    private currentlyFetchedSearchResultUsers: User[];
     private http: Http;
 
     constructor(http: Http) {
@@ -27,18 +25,10 @@ export default class UserService {
     public getUserById(id: string){
         return this.http.get("http://localhost:31696/api/Users/GetUser/" + id);
     }
-    public getCurrentUser(){
-        
-    }
-    public getCurrentUserEMail(){
-        return "test@example.com";
-    }
     public followUser(user: User){
-        // Follow user on server
-        user.doesCurrentUserFollowThisUser = true;
+        return this.http.put("http://localhost:31696/api/Users/FollowUser/" + user.id, { id: user.id });
     }
     public unfollowUser(user: User){
-        // Unfollow user on server
-        user.doesCurrentUserFollowThisUser = false;
+        return this.http.put("http://localhost:31696/api/Users/UnfollowUser/" + user.id, { id: user.id });
     }
 }
