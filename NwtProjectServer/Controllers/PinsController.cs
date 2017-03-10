@@ -195,6 +195,7 @@ namespace NwtProjectServer.Controllers
             }
             dbPin.UsersThatLikedThisPin.Add(user);
             dbPin.NumberOfLikes++;
+            db.Entry(dbPin).State = EntityState.Modified;
             db.SaveChanges();
 
             return Ok();
