@@ -13,6 +13,7 @@ using System.Web.Http.Cors;
 using NwtProjectServer.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Web;
 
 namespace NwtProjectServer.Controllers
 {
@@ -84,17 +85,42 @@ namespace NwtProjectServer.Controllers
 
         // POST: api/Pins
         [ResponseType(typeof(Pin))]
-        public IHttpActionResult PostPin(Pin pin)
+        [HttpPost]
+        public IHttpActionResult PostPin(CreatePinViewModel model)
         {
-            if (!ModelState.IsValid)
+            model.PictureFile = HttpContext.Current.Request.Files[0];
+
+            if (String.IsNullOrEmpty(model.Title))
             {
                 return BadRequest(ModelState);
             }
 
-            db.Pins.Add(pin);
+            var newPin = new Pin();
+            var currentUser = db.Users.Find(User.Identity.GetUserId());
+
+            newPin.Title = model.Title;
+            newPin.CreatedBy = currentUser;
+            newPin.NumberOfLikes = 0;
+            newPin.PostedOn = DateTime.Now;
+            newPin.Text = model.Text;
+
+            var pictureUrl = "https://www.arbeidslys.no/templates/newyork/images/no_image.png";
+            if (model.PictureFile != null &&
+                (model.PictureFile.ContentType == "image/jpg" || model.PictureFile.ContentType == "image/jpeg" || model.PictureFile.ContentType == "image/png" || model.PictureFile.ContentType == "image/gif")
+                )
+            {
+                string pictureName = System.IO.Path.GetFileNameWithoutExtension(model.PictureFile.FileName) + DateTime.Now.ToString("yyyyMMddHHmmssfff") + System.IO.Path.GetExtension(model.PictureFile.FileName);
+                pictureUrl = System.IO.Path.Combine(HttpContext.Current.Server.MapPath("~/Content/Images/PinImages"), pictureName);
+
+                model.PictureFile.SaveAs(pictureUrl);
+                pictureUrl = "/Content/Images/ProfileImages/" + pictureName;
+            }
+            newPin.ImageUrl = pictureUrl;
+
+            db.Pins.Add(newPin);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = pin.Id }, pin);
+            return Ok(PinViewModel.CreateObjectFromDatabaseObject(newPin));
         }
 
         // DELETE: api/Pins/5

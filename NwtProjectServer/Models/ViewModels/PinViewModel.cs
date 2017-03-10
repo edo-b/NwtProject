@@ -33,14 +33,17 @@ namespace NwtProjectServer.Models.ViewModels
             newPin.PostedOn = pin.PostedOn;
             newPin.NumberOfLikes = pin.NumberOfLikes;
             newPin.CreatedBy = UserViewModel.CreateObjectFromDatabaseObject(pin.CreatedBy);
-            newPin.Comments = pin.Comments.Select(x => CommentViewModel.CreateObjectFromDatabaseObject(x)).ToList();
+            if(pin.Comments != null)
+            {
+                newPin.Comments = pin.Comments.Select(x => CommentViewModel.CreateObjectFromDatabaseObject(x)).ToList();
+            }
 
             if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
             {
                 var db = new ApplicationDbContext();
                 var currentUser = db.Users.Find(System.Web.HttpContext.Current.User.Identity.GetUserId());
 
-                if(pin.UsersThatLikedThisPin.FirstOrDefault(x => x.Id == currentUser.Id) != null)
+                if(pin.UsersThatLikedThisPin != null && pin.UsersThatLikedThisPin.FirstOrDefault(x => x.Id == currentUser.Id) != null)
                 {
                     newPin.DidCurrentUserLikePin = true;
                 }

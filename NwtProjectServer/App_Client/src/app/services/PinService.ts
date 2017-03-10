@@ -30,8 +30,7 @@ export default class PinService {
         return this.http.get("http://localhost:31696/api/Pins/PinsOfUser/" + id);
     }
     public deletePin(pinToDelete: Pin) {
-        //delete pin on server
-        this.currentPins.splice(this.currentPins.indexOf(pinToDelete), 1);
+        return this.http.delete("http://localhost:31696/api/Pins/DeletePin/" + pinToDelete.id);
     }
     public deleteComment(pin: Pin, commentId: number) {
         return this.http.post('http://localhost:31696/api/Pins/DeleteComment/' + commentId, { id: commentId });
@@ -45,8 +44,15 @@ export default class PinService {
     public unlikePin(pin: Pin) {
         return this.http.post('http://localhost:31696/api/Pins/UnlikePin/' + pin.id, { Id: pin.id });
     }
-    public createNewPin(pinTitle: string, pinText: string, imageFile: File) {
-        //upload picture to server and create pin on server
-        this.currentPins.push(new Pin(15, "", pinText, pinTitle, null, false, 0, new User("asdfaef", "Test", "User", null, null), null))
+    public createNewPin(pinTitle: string, pinText: string, imageFile: any) {
+        let formData: FormData = new FormData();
+        formData.append('Files', imageFile);
+        formData.append('Title', pinTitle);
+        formData.append('Text', pinText);
+
+
+        return this.http.post("http://localhost:31696/api/Pins/PostPin", formData);
+
+        //return this.http.post('http://localhost:31696/api/Pins/PostPin', {PictureFile: imageFile, Title: pinTitle, Text: pinText});
     }
 }

@@ -52,7 +52,7 @@ import PinService from './../services/PinService';
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" (click)="addNewPin(titleInput, textInput)" data-dismiss="modal">Add new pin</button> 
+                    <button class="btn btn-primary" (click)="addNewPin(titleInput, textInput, fileInput)" data-dismiss="modal">Add new pin</button> 
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
                 </div><!-- /.modal-content -->
@@ -62,7 +62,7 @@ import PinService from './../services/PinService';
 export default class HomeRouteComponent {
     private newsFeedPins: Pin[];
     private pinService: PinService;
-    private file: File;
+    private file: any;
     public previewSrc: string;
 
     constructor(pinservice: PinService) {
@@ -104,7 +104,13 @@ export default class HomeRouteComponent {
                     );
                 break;
             case "delete":
-                this.newsFeedPins.splice(this.newsFeedPins.indexOf(pin), 1);
+                this.pinService.deletePin(pin)
+                    .subscribe(
+                        response => {
+                            this.newsFeedPins.splice(this.newsFeedPins.indexOf(pin), 1);
+                        },
+                        error => console.log("Error when deleting pin")
+                    );
                 break;
         }
     }
@@ -163,10 +169,19 @@ export default class HomeRouteComponent {
             this.file = null;
         }
     }
-    public addNewPin(titleInput: HTMLInputElement, textInput: HTMLInputElement){
-        if(titleInput.value && textInput.value && this.file){
-            this.pinService.createNewPin(titleInput.value, textInput.value, this.file);
+    public addNewPin(titleInput: HTMLInputElement, textInput: HTMLInputElement, fileInput: HTMLInputElement){
+        if (titleInput.value && textInput.value && this.file) {
+            console.log(this.file);
+            this.pinService.createNewPin(titleInput.value, textInput.value, fileInput.files[0])
+                    .subscribe(
+                        response => {
+                            let pin = response.json();
+                            if (pin) {
+                                this.newsFeedPins.push(pin);
+                            }
+                        },
+                        error => console.log("Error when creatingPin")
+                    );
         }
-        
     }
 }

@@ -22,8 +22,7 @@ import UserService from './../services/UserService';
                     <img class="img-thumbnail col-md-4" [src]="user.profileImageUrl" style="width:100px;"/>
                     <a class="col-md-8" [routerLink]="'/profile/' + user.id" style="color:black; font-size:20px; text-decoration:none;">{{user.firstName}} {{user.lastName}}</a>
                     <button class="btn btn-success" *ngIf="!user.doesCurrentUserFollowThisUser" (click)="followUser(user)">Follow</button>
-                    <i class="glyphicon glyphicon-ok" style="color: green; font-size: 18pt;"></i>
-                    <span *ngIf="user.doesCurrentUserFollowThisUser" style="color:green;"><i class="fa fa-check-circle-o" style="font-size:18px;"></i> Followed</span>
+                    <span *ngIf="user.doesCurrentUserFollowThisUser" style="color:green;"><img src="https://cdn4.iconfinder.com/data/icons/web-ui-color/128/Checkmark-16.png" style="margin-bottom:5px;"/> Followed</span>
                 </div>
                 <hr>
             </div>
