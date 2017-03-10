@@ -133,6 +133,14 @@ namespace NwtProjectServer.Controllers
                 return NotFound();
             }
 
+            if(pin.Comments != null)
+            {
+                for(var i = 0; i < pin.Comments.Count; i++)
+                {
+                    db.Comments.Remove(pin.Comments.ElementAt(i));
+                }
+            }
+
             db.Pins.Remove(pin);
             db.SaveChanges();
 
