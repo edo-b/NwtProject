@@ -44,15 +44,7 @@ export default class PinService {
     public unlikePin(pin: Pin) {
         return this.http.post('http://localhost:31696/api/Pins/UnlikePin/' + pin.id, { Id: pin.id });
     }
-    public createNewPin(pinTitle: string, pinText: string, imageFile: any) {
-        let formData: FormData = new FormData();
-        formData.append('Files', imageFile);
-        formData.append('Title', pinTitle);
-        formData.append('Text', pinText);
-
-
-        return this.http.post("http://localhost:31696/api/Pins/PostPin", formData);
-
-        //return this.http.post('http://localhost:31696/api/Pins/PostPin', {PictureFile: imageFile, Title: pinTitle, Text: pinText});
+    public createNewPin(pinTitle: string, pinText: string, imageSrc: string) {
+        return this.http.post("http://localhost:31696/api/Pins/PostPin", { Title: pinTitle, Text: pinText, PictureDataUri: imageSrc});
     }
 }

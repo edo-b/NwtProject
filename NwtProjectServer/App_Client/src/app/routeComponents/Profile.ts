@@ -26,7 +26,7 @@ import PinService from './../services/PinService';
             <div class="col-md-2"></div>
         </div>
         <div class="row">
-            <pin *ngFor="let pin of userPins" [pin]=pin [isEditMode]=false></pin>
+            <pin *ngFor="let pin of userPins" (likeDeleteEvent)="likeDelete($event)" (commentEvent)="commentEvent($event)" [pin]=pin [isEditMode]=false></pin>
         </div>
     `
 })
@@ -70,7 +70,74 @@ export default class ProfileComponent {
                 error => console.log("Error when getting My Pins")
                 );
          });
+    }
+
+    public likeDelete(evt: any) {
+        let pin = evt.pin;
+        let action = evt.action;
+        switch (action) {
+            case "like":
+                this.pinService.likePin(pin)
+                    .subscribe(
+                    response => {
+                        this.userPins[this.userPins.indexOf(pin)].didCurrentUserLikePin = true;
+                        this.userPins[this.userPins.indexOf(pin)].numberOfLikes++;
+                    },
+                    error => console.log("Error when sending like")
+                    );
+                break;
+            case "unlike":
+                this.pinService.unlikePin(pin)
+                    .subscribe(
+                    response => {
+                        this.userPins[this.userPins.indexOf(pin)].didCurrentUserLikePin = false;
+                        this.userPins[this.userPins.indexOf(pin)].numberOfLikes--;
+                    },
+                    error => console.log("Error when sending unlike")
+                    );
+                break;
+            case "delete":
+                this.pinService.deletePin(pin)
+                    .subscribe(
+                    response => {
+                        this.userPins.splice(this.userPins.indexOf(pin), 1);
+                    },
+                    error => console.log("Error when deleting pin")
+                    );
+                break;
         }
+    }
+
+    public commentEvent(evt: any) {
+        let action = evt.action;
+        let pin = evt.pin;
+        switch (action) {
+            case "delete":
+                let commentId = evt.commentId;
+                this.pinService.deleteComment(pin, commentId)
+                    .subscribe(
+                    response => {
+                        this.userPins[this.userPins.indexOf(pin)].comments.splice(this.userPins[this.userPins.indexOf(pin)].comments.indexOf(this.userPins[this.userPins.indexOf(pin)].comments.find(x => x.id == commentId)), 1);
+                    },
+                    error => console.log("Error when deleting comment Pins")
+                    );
+                break;
+            case "post":
+                let text = evt.text;
+                this.pinService.postComment(pin, text)
+                    .subscribe(
+                    response => {
+                        let comment = response.json();
+                        if (!this.userPins[this.userPins.indexOf(pin)].comments) {
+                            this.userPins[this.userPins.indexOf(pin)].comments = [];
+                        }
+                        this.userPins[this.userPins.indexOf(pin)].comments.push(comment);
+                    },
+                    error => console.log("Error when posting comment")
+                    );
+                break;
+        }
+    }
 
     public followUser() {
         this.userService.followUser(this.user)

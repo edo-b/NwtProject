@@ -88,8 +88,6 @@ namespace NwtProjectServer.Controllers
         [HttpPost]
         public IHttpActionResult PostPin(CreatePinViewModel model)
         {
-            model.PictureFile = HttpContext.Current.Request.Files[0];
-
             if (String.IsNullOrEmpty(model.Title))
             {
                 return BadRequest(ModelState);
@@ -103,19 +101,14 @@ namespace NwtProjectServer.Controllers
             newPin.NumberOfLikes = 0;
             newPin.PostedOn = DateTime.Now;
             newPin.Text = model.Text;
-
-            var pictureUrl = "https://www.arbeidslys.no/templates/newyork/images/no_image.png";
-            if (model.PictureFile != null &&
-                (model.PictureFile.ContentType == "image/jpg" || model.PictureFile.ContentType == "image/jpeg" || model.PictureFile.ContentType == "image/png" || model.PictureFile.ContentType == "image/gif")
-                )
+            if(String.IsNullOrEmpty(model.PictureDataUri))
             {
-                string pictureName = System.IO.Path.GetFileNameWithoutExtension(model.PictureFile.FileName) + DateTime.Now.ToString("yyyyMMddHHmmssfff") + System.IO.Path.GetExtension(model.PictureFile.FileName);
-                pictureUrl = System.IO.Path.Combine(HttpContext.Current.Server.MapPath("~/Content/Images/PinImages"), pictureName);
-
-                model.PictureFile.SaveAs(pictureUrl);
-                pictureUrl = "/Content/Images/ProfileImages/" + pictureName;
+                newPin.ImageUrl = "https://www.arbeidslys.no/templates/newyork/images/no_image.png";
             }
-            newPin.ImageUrl = pictureUrl;
+            else
+            {
+                newPin.ImageUrl = model.PictureDataUri;
+            }
 
             db.Pins.Add(newPin);
             db.SaveChanges();

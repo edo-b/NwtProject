@@ -171,8 +171,7 @@ export default class HomeRouteComponent {
     }
     public addNewPin(titleInput: HTMLInputElement, textInput: HTMLInputElement, fileInput: HTMLInputElement){
         if (titleInput.value && textInput.value && this.file) {
-            console.log(this.file);
-            this.pinService.createNewPin(titleInput.value, textInput.value, fileInput.files[0])
+            this.pinService.createNewPin(titleInput.value, textInput.value, this.previewSrc)
                     .subscribe(
                         response => {
                             let pin = response.json();

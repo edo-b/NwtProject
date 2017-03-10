@@ -9,7 +9,7 @@ namespace NwtProjectServer.Models.ViewModels
 {
     public class CreatePinViewModel
     {
-        public HttpPostedFile PictureFile { get; set; }
+        public string PictureDataUri { get; set; }
         public string Title { get; set; }
         public string Text { get; set; }
     }
