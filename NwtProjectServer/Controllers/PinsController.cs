@@ -17,6 +17,7 @@ using System.Web;
 
 namespace NwtProjectServer.Controllers
 {
+    [Authorize]
     [EnableCors(origins: "http://localhost:3000", headers: "*", methods: "*")]
     public class PinsController : ApiController
     {

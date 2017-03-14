@@ -15,6 +15,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace NwtProjectServer.Controllers
 {
+    [Authorize]
     public class UsersController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
