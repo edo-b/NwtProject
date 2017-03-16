@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NwtProjectServer.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace NwtProjectServer
     {
         protected void Application_Start()
         {
+            Database.SetInitializer(new ContextInitializer());
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

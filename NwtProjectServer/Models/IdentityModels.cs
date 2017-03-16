@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NwtProjectServer.Models
 {
@@ -15,7 +16,10 @@ namespace NwtProjectServer.Models
         public string ProfileImageUrl { get; set; }
 
         public virtual ICollection<ApplicationUser> FollowedUsers { get; set; }
+        [InverseProperty("CreatedBy")]
         public virtual ICollection<Pin> Pins { get; set; }
+        [InverseProperty("UsersThatLikedThisPin")]
+        public virtual ICollection<Pin> PinsThatUserLiked { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
